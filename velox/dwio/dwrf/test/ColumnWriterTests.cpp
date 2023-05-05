@@ -530,13 +530,13 @@ void generateSampleData(std::vector<std::optional<T>>& data) {
   }
 }
 
-TEST(ColumnWriterTests, TestIntWriter) {
-  std::vector<std::optional<int32_t>> data;
+TEST(ColumnWriterTests, TestByteWriter) {
+  std::vector<std::optional<int8_t>> data;
   generateSampleData(data);
-  testDataTypeWriter(INTEGER(), data);
+  testDataTypeWriter(TINYINT(), data);
 
   // Test writer with non-zero sequence
-  testDataTypeWriter(INTEGER(), data, 1);
+  testDataTypeWriter(TINYINT(), data, 5);
 }
 
 TEST(ColumnWriterTests, TestShortWriter) {
