@@ -268,8 +268,8 @@ class BaseColumnWriter : public ColumnWriter {
       const common::Ranges& ranges);
 
   // TODO zuo
-  velox::dwrf::DwrfFormat format_ = velox::dwrf::DwrfFormat::kOrc;
-  velox::dwrf::RleVersion rleVersion_ = velox::dwrf::RleVersion_2;
+  velox::dwrf::DwrfFormat format_ = velox::dwrf::DwrfFormat::kDwrf;
+  velox::dwrf::RleVersion rleVersion_ = velox::dwrf::RleVersion_1;
   const dwio::common::TypeWithId& type_;
   std::vector<std::unique_ptr<BaseColumnWriter>> children_;
   std::unique_ptr<IndexBuilder> indexBuilder_;
