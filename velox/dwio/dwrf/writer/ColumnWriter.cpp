@@ -670,6 +670,7 @@ class TimestampColumnWriter : public BaseColumnWriter {
       const uint32_t sequence,
       std::function<void(IndexBuilder&)> onRecordPosition)
       : BaseColumnWriter{context, type, sequence, onRecordPosition} {
+
     seconds_.reset(createRleEncoder</* isSigned = */ true>(
                        rleVersion_,
                        newStream(StreamKind::StreamKind_DATA),
@@ -681,6 +682,7 @@ class TimestampColumnWriter : public BaseColumnWriter {
                      newStream(StreamKind::StreamKind_NANO_DATA),
                      context.getConfig(Config::USE_VINTS),
                      LONG_BYTE_SIZE).release());
+
     reset();
   }
 
@@ -990,7 +992,7 @@ class StringColumnWriter : public BaseColumnWriter {
               !context_.getConfig(
                   Config::MAP_FLAT_DISABLE_DICT_ENCODING_STRING)) &&
           !context_.isLowMemoryMode();
-    } else {
+    } else { // kOrc
       return false;
     }
   }

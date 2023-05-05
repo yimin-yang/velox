@@ -174,7 +174,7 @@ class BaseColumnWriter : public ColumnWriter {
 
     if (format_ == dwrf::DwrfFormat::kDwrf) {
       VELOX_CHECK(rleVersion_ == velox::dwrf::RleVersion_1);
-    } else {
+    } else { // kOrc
       VELOX_CHECK(rleVersion_ == velox::dwrf::RleVersion_1
                   || rleVersion_ == velox::dwrf::RleVersion_2);
     }
@@ -259,7 +259,7 @@ class BaseColumnWriter : public ColumnWriter {
               !context_.getConfig(Config::MAP_FLAT_DISABLE_DICT_ENCODING)) &&
           !context_.isLowMemoryMode();
     } else { // kOrc
-      return false; // TODO zuo
+      return false;
     }
   }
 
@@ -267,7 +267,7 @@ class BaseColumnWriter : public ColumnWriter {
       const VectorPtr& slice,
       const common::Ranges& ranges);
 
-  // TODO zuo
+  // TODO: decouple Dwrf and Orc
   velox::dwrf::DwrfFormat format_ = velox::dwrf::DwrfFormat::kDwrf;
   velox::dwrf::RleVersion rleVersion_ = velox::dwrf::RleVersion_1;
   const dwio::common::TypeWithId& type_;

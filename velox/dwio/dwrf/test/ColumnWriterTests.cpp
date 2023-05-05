@@ -94,9 +94,9 @@ class TestStripeStreams : public StripeStreamsBase {
     }
   }
 
-  virtual DwrfFormat format() const override {
-    return DwrfFormat::kOrc;
-  }
+//  virtual DwrfFormat format() const override {
+//    return DwrfFormat::kOrc;
+//  }
 
   std::unique_ptr<SeekableInputStream> getStream(
       const DwrfStreamIdentifier& si,
