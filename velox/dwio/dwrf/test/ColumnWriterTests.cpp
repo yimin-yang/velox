@@ -94,10 +94,6 @@ class TestStripeStreams : public StripeStreamsBase {
     }
   }
 
-  virtual DwrfFormat format() const override {
-    return DwrfFormat::kOrc;
-  }
-
   std::unique_ptr<SeekableInputStream> getStream(
       const DwrfStreamIdentifier& si,
       bool throwIfNotFound) const override {
@@ -358,7 +354,6 @@ void testDataTypeWriter(
   }
 }
 
-#if 0
 TEST(ColumnWriterTests, LowMemoryModeConfig) {
   auto dataTypeWithId = TypeWithId::create(std::make_shared<VarcharType>(), 1);
   auto config = std::make_shared<Config>();
@@ -521,7 +516,6 @@ TEST(ColumnWriterTests, TestByteNullAndExtremeValueMixed) {
   }
   testDataTypeWriter(TINYINT(), data);
 }
-#endif
 
 template <typename T>
 void generateSampleData(std::vector<std::optional<T>>& data) {
@@ -543,16 +537,6 @@ TEST(ColumnWriterTests, TestIntWriter) {
 
   // Test writer with non-zero sequence
   testDataTypeWriter(INTEGER(), data, 1);
-}
-
-#if 0
-TEST(ColumnWriterTests, TestByteWriter) {
-  std::vector<std::optional<int8_t>> data;
-  generateSampleData(data);
-  testDataTypeWriter(TINYINT(), data);
-
-  // Test writer with non-zero sequence
-  testDataTypeWriter(TINYINT(), data, 5);
 }
 
 TEST(ColumnWriterTests, TestShortWriter) {
@@ -4487,5 +4471,4 @@ TEST(ColumnWriterTests, mapDictionary) {
       randomNulls(3));
 }
 
-#endif
 } // namespace facebook::velox::dwrf

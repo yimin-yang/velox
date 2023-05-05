@@ -67,7 +67,6 @@ class RleEncoderV2 : public IntEncoder<isSigned> {
         fixedRunLength(0),
         variableRunLength(0),
         prevDelta{0} {
-    std::cout << "call RleEncoderV2" << std::endl;  //todo delete it
     literals = new int64_t[MAX_LITERAL_SIZE];
     gapVsPatchList = new int64_t[MAX_LITERAL_SIZE];
     zigzagLiterals = isSigned ? new int64_t[MAX_LITERAL_SIZE] : nullptr;
@@ -90,7 +89,6 @@ class RleEncoderV2 : public IntEncoder<isSigned> {
       const int64_t* data,
       const common::Ranges& ranges,
       const uint64_t* nulls) override {
-    std::cout << "call RleEncoderV2.add1" << std::endl;
     return addImpl(data, ranges, nulls);
   }
 
@@ -98,7 +96,6 @@ class RleEncoderV2 : public IntEncoder<isSigned> {
       const int32_t* data,
       const common::Ranges& ranges,
       const uint64_t* nulls) override {
-    std::cout << "call RleEncoderV2.add2" << std::endl;
     return addImpl(data, ranges, nulls);
   }
 
@@ -106,7 +103,6 @@ class RleEncoderV2 : public IntEncoder<isSigned> {
       const uint32_t* data,
       const common::Ranges& ranges,
       const uint64_t* nulls) override {
-    std::cout << "call RleEncoderV2.add3" << std::endl;
     return addImpl(data, ranges, nulls);
   }
 
@@ -114,7 +110,6 @@ class RleEncoderV2 : public IntEncoder<isSigned> {
       const int16_t* data,
       const common::Ranges& ranges,
       const uint64_t* nulls) override {
-    std::cout << "call RleEncoderV2.add4" << std::endl;
     return addImpl(data, ranges, nulls);
   }
 
@@ -122,12 +117,10 @@ class RleEncoderV2 : public IntEncoder<isSigned> {
       const uint16_t* data,
       const common::Ranges& ranges,
       const uint64_t* nulls) override {
-    std::cout << "call RleEncoderV2.add5" << std::endl;
     return addImpl(data, ranges, nulls);
   }
 
   void writeValue(const int64_t value) override {
-    std::cout << "call RleEncoderV2.writeValue, value=" << value << std::endl;
     write(value);
   }
 
@@ -303,12 +296,6 @@ uint64_t RleEncoderV2<isSigned>::addImpl(
     const T* data,
     const common::Ranges& ranges,
     const uint64_t* nulls) {
-  std::cout << "call RleEncoderV2.addImpl" << std::endl;
-  for (const auto& [start, end] : ranges.getRanges()) {
-    std::cout << "start=" << start << std::endl;
-    std::cout << "end=" << end << std::endl;
-  }
-
   uint64_t count = 0;
   if (nulls) {
     for (auto& pos : ranges) {
