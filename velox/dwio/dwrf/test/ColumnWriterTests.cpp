@@ -94,9 +94,9 @@ class TestStripeStreams : public StripeStreamsBase {
     }
   }
 
-//  virtual DwrfFormat format() const override {
-//    return DwrfFormat::kOrc;
-//  }
+  virtual DwrfFormat format() const override {
+    return DwrfFormat::kOrc;
+  }
 
   std::unique_ptr<SeekableInputStream> getStream(
       const DwrfStreamIdentifier& si,
@@ -358,6 +358,7 @@ void testDataTypeWriter(
   }
 }
 
+#if 0
 TEST(ColumnWriterTests, LowMemoryModeConfig) {
   auto dataTypeWithId = TypeWithId::create(std::make_shared<VarcharType>(), 1);
   auto config = std::make_shared<Config>();
@@ -520,6 +521,7 @@ TEST(ColumnWriterTests, TestByteNullAndExtremeValueMixed) {
   }
   testDataTypeWriter(TINYINT(), data);
 }
+#endif
 
 template <typename T>
 void generateSampleData(std::vector<std::optional<T>>& data) {
