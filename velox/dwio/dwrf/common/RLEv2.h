@@ -147,7 +147,7 @@ class RleEncoderV2 : public IntEncoder<isSigned> {
         }
       }
     }
-    return IntEncoder<isSigned>::flush();  // used IntEncoder<isSigned>::flush() instead of C++ code from Apache ORC
+    return IntEncoder<isSigned>::flush();
   }
 
   // copied from RLEv1.h
