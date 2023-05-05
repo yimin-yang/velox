@@ -992,7 +992,7 @@ class StringColumnWriter : public BaseColumnWriter {
               !context_.getConfig(
                   Config::MAP_FLAT_DISABLE_DICT_ENCODING_STRING)) &&
           !context_.isLowMemoryMode();
-    } else { // kOrc
+    } else { // kOrc TODO: handle dictionary encoding for ORC
       return false;
     }
   }
