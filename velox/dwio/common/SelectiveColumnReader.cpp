@@ -50,7 +50,12 @@ SelectiveColumnReader::SelectiveColumnReader(
       nodeType_(requestedType),
       formatData_(params.toFormatData(requestedType, scanSpec)),
       scanSpec_(&scanSpec),
-      type_{type} {}
+      type_{type} {
+  std::cout << "call SelectiveColumnReader" << std::endl;
+  std::cout << "requestedType->type->toString()=" << requestedType->type->toString() << std::endl;
+  std::cout << "scanSpec.toString()=" << scanSpec.toString() << std::endl;
+  std::cout << "type_=" << type_->toString() << std::endl;
+}
 
 void SelectiveColumnReader::filterRowGroups(
     uint64_t rowGroupSize,

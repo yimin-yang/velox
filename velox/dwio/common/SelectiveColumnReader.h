@@ -211,6 +211,10 @@ class SelectiveColumnReader {
   vector_size_t* FOLLY_NONNULL mutableOutputRows(int32_t size) {
     numOutConfirmed_ = outputRows_.size();
     outputRows_.resize(numOutConfirmed_ + size);
+    std::cout << "call mutableOutputRows" << std::endl;
+    std::cout << "numOutConfirmed_=" << numOutConfirmed_ << std::endl;
+    std::cout << "outputRows_ resize to" << numOutConfirmed_ + size
+              << std::endl;
     return outputRows_.data() + numOutConfirmed_;
   }
 
@@ -250,6 +254,7 @@ class SelectiveColumnReader {
   }
 
   void setNumValues(vector_size_t size) {
+    std::cout << "call setNumValues, numValues_=" << size << std::endl;
     numValues_ = size;
   }
 
@@ -260,6 +265,7 @@ class SelectiveColumnReader {
 
   // The number of values copied into the results.
   int32_t numValues() const {
+    std::cout << "call numValues, numValues_=" << numValues_ << std::endl;
     return numValues_;
   }
   void setNumRows(vector_size_t size) {
@@ -334,6 +340,7 @@ class SelectiveColumnReader {
   }
 
   void setReadOffset(vector_size_t readOffset) {
+    std::cout << "call setReadOffset, readOffset=" << readOffset << std::endl;
     readOffset_ = readOffset;
   }
 

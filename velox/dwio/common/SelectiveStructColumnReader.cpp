@@ -56,6 +56,9 @@ void SelectiveStructColumnReaderBase::next(
     uint64_t numValues,
     VectorPtr& result,
     const uint64_t* incomingNulls) {
+
+  std::cout << "call next, numValues=" << numValues << std::endl;
+
   VELOX_CHECK(!incomingNulls, "next may only be called for the root reader.");
   if (children_.empty()) {
     // no readers

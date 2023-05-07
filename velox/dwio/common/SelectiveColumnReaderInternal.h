@@ -47,14 +47,18 @@ class Timer {
 
 template <typename T>
 void SelectiveColumnReader::ensureValuesCapacity(vector_size_t numRows) {
+  std::cout << "call ensureValuesCapacity, numRows=" << numRows << std::endl;
+  std::cout << "simd::kPadding=" << simd::kPadding << std::endl;
   if (values_ && values_->unique() &&
       values_->capacity() >=
           BaseVector::byteSize<T>(numRows) + simd::kPadding) {
+    std::cout << "case 1" << std::endl;
     return;
   }
   values_ = AlignedBuffer::allocate<T>(
       numRows + (simd::kPadding / sizeof(T)), &memoryPool_);
   rawValues_ = values_->asMutable<char>();
+  std::cout << "case 2" << std::endl;
 }
 
 template <typename T>
@@ -110,6 +114,8 @@ void SelectiveColumnReader::getFlatValues(
     VectorPtr* result,
     const TypePtr& type,
     bool isFinal) {
+  std::cout << "call getFlatValues, type=" << type->toString()
+            << " isFinal=" << isFinal << std::endl;
   VELOX_CHECK_NE(valueSize_, kNoValueSize);
   VELOX_CHECK(mayGetValues_);
   if (isFinal) {
@@ -126,6 +132,9 @@ void SelectiveColumnReader::getFlatValues(
         sizeof(TVector) * rows.size());
     return;
   }
+  std::cout << "valueSize_=" << valueSize_ << std::endl;
+  std::cout << "sizeof(T)=" << sizeof(T) << std::endl;
+  std::cout << "sizeof(TVector)=" << sizeof(TVector) << std::endl;
   if (valueSize_ == sizeof(TVector)) {
     compactScalarValues<TVector, TVector>(rows, isFinal);
   } else if (sizeof(T) >= sizeof(TVector)) {
@@ -155,6 +164,7 @@ void SelectiveColumnReader::getFlatValues<int8_t, bool>(
 
 template <typename T, typename TVector>
 void SelectiveColumnReader::upcastScalarValues(RowSet rows) {
+  std::cout << "call upcastScalarValues" << std::endl;
   VELOX_CHECK_LE(rows.size(), numValues_);
   VELOX_CHECK(!rows.empty());
   if (!values_) {
@@ -164,7 +174,7 @@ void SelectiveColumnReader::upcastScalarValues(RowSet rows) {
   // Since upcast is not going to be a common path, allocate buffer to copy
   // upcasted values to and then copy back to the values buffer.
   std::vector<TVector> buf;
-  buf.resize(rows.size());
+  buf.resize(rows.size());   // allocation
   T* typedSourceValues = reinterpret_cast<T*>(rawValues_);
   RowSet sourceRows;
   // The row numbers corresponding to elements in 'values_' are in
@@ -190,7 +200,7 @@ void SelectiveColumnReader::upcastScalarValues(RowSet rows) {
     }
 
     VELOX_DCHECK(sourceRows[i] == nextRow);
-    buf[rowIndex] = typedSourceValues[i];
+    buf[rowIndex] = typedSourceValues[i];   // copy
     if (moveNulls && rowIndex != i) {
       bits::setBit(
           rawResultNulls_, rowIndex, bits::isBitSet(rawResultNulls_, i));
@@ -203,7 +213,7 @@ void SelectiveColumnReader::upcastScalarValues(RowSet rows) {
     nextRow = rows[rowIndex];
   }
   ensureValuesCapacity<TVector>(rows.size());
-  std::memcpy(rawValues_, buf.data(), rows.size() * sizeof(TVector));
+  std::memcpy(rawValues_, buf.data(), rows.size() * sizeof(TVector));  // copy
   numValues_ = rows.size();
   valueRows_.resize(numValues_);
   values_->setSize(numValues_ * sizeof(TVector));

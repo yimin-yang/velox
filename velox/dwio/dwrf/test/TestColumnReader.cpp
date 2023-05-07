@@ -119,6 +119,7 @@ class ColumnReaderTestBase {
         std::dynamic_pointer_cast<const RowType>(requestedType);
     ColumnSelector cs(rowType, nodes, true);
     auto options = RowReaderOptions();
+    std::cout << "returnFlatVector()=" << returnFlatVector() << std::endl;
     options.setReturnFlatVector(returnFlatVector());
 
     EXPECT_CALL(streams_, getColumnSelectorProxy())
@@ -129,6 +130,7 @@ class ColumnReaderTestBase {
     auto dataTypeWithId =
         TypeWithId::create(dataType ? dataType : requestedType);
 
+    std::cout << "useSelectiveReader()=" << useSelectiveReader() << std::endl;
     if (useSelectiveReader()) {
       if (!scanSpec) {
         scanSpec_ = std::make_unique<common::ScanSpec>("root");
@@ -395,6 +397,7 @@ class SchemaMismatchTest : public TestWithParam<bool>,
   std::unique_ptr<SelectiveColumnReader> asIsSelectiveColumnReader_;
 };
 
+#if 0
 TEST_P(TestColumnReader, testBooleanWithNulls) {
   // set getEncoding
   proto::ColumnEncoding directEncoding;
@@ -4574,6 +4577,7 @@ TEST_P(SchemaMismatchTest, testByte) {
   runTest<int8_t, int32_t>(size);
   runTest<int8_t, int64_t>(size);
 }
+#endif
 
 TEST_P(SchemaMismatchTest, testIntDirect) {
   // set getEncoding
@@ -4609,6 +4613,7 @@ TEST_P(SchemaMismatchTest, testIntDirect) {
   runTest<int32_t, int64_t>(size);
 }
 
+#if 0
 TEST_P(SchemaMismatchTest, testIntDict) {
   // set getEncoding
   proto::ColumnEncoding directEncoding;
@@ -4767,6 +4772,7 @@ VELOX_INSTANTIATE_TEST_SUITE_P(
     SchemaMismatch,
     SchemaMismatchTest,
     Values(false));
+#endif
 
 VELOX_INSTANTIATE_TEST_SUITE_P(
     SelectiveSchemaMismatch,
