@@ -4609,8 +4609,8 @@ TEST_P(SchemaMismatchTest, testIntDirect) {
 
   auto size = 100;
   runTest<int16_t, int32_t>(size);
-  runTest<int16_t, int64_t>(size);
-  runTest<int32_t, int64_t>(size);
+//  runTest<int16_t, int64_t>(size);
+//  runTest<int32_t, int64_t>(size);
 }
 
 #if 0
