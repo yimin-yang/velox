@@ -397,7 +397,6 @@ class SchemaMismatchTest : public TestWithParam<bool>,
   std::unique_ptr<SelectiveColumnReader> asIsSelectiveColumnReader_;
 };
 
-#if 0
 TEST_P(TestColumnReader, testBooleanWithNulls) {
   // set getEncoding
   proto::ColumnEncoding directEncoding;
@@ -4577,7 +4576,6 @@ TEST_P(SchemaMismatchTest, testByte) {
   runTest<int8_t, int32_t>(size);
   runTest<int8_t, int64_t>(size);
 }
-#endif
 
 TEST_P(SchemaMismatchTest, testIntDirect) {
   // set getEncoding
@@ -4609,11 +4607,10 @@ TEST_P(SchemaMismatchTest, testIntDirect) {
 
   auto size = 100;
   runTest<int16_t, int32_t>(size);
-//  runTest<int16_t, int64_t>(size);
-//  runTest<int32_t, int64_t>(size);
+  runTest<int16_t, int64_t>(size);
+  runTest<int32_t, int64_t>(size);
 }
 
-#if 0
 TEST_P(SchemaMismatchTest, testIntDict) {
   // set getEncoding
   proto::ColumnEncoding directEncoding;
@@ -4772,7 +4769,6 @@ VELOX_INSTANTIATE_TEST_SUITE_P(
     SchemaMismatch,
     SchemaMismatchTest,
     Values(false));
-#endif
 
 VELOX_INSTANTIATE_TEST_SUITE_P(
     SelectiveSchemaMismatch,
