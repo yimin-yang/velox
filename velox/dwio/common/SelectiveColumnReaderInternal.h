@@ -162,13 +162,11 @@ void SelectiveColumnReader::upcastScalarValues(RowSet rows) {
   }
   VELOX_CHECK_GT(sizeof(TVector), sizeof(T));
   // Since upcast is not going to be a common path, allocate buffer to copy
-  // upcasted values to and then copy back to the values buffer.
-  //  std::vector<TVector> buf;
-  //  buf.resize(rows.size());
+  // upcasted values to.
   BufferPtr buf = AlignedBuffer::allocate<TVector>(
       rows.size() + (simd::kPadding / sizeof(TVector)), &memoryPool_);
-  void* FOLLY_NULLABLE raw_buf = buf->asMutable<char>();
-  TVector* typedDestValues = reinterpret_cast<TVector*>(raw_buf);
+  void* FOLLY_NULLABLE rawBuf = buf->asMutable<char>();
+  TVector* typedDestValues = reinterpret_cast<TVector*>(rawBuf);
   T* typedSourceValues = reinterpret_cast<T*>(rawValues_);
   RowSet sourceRows;
   // The row numbers corresponding to elements in 'values_' are in
@@ -194,7 +192,6 @@ void SelectiveColumnReader::upcastScalarValues(RowSet rows) {
     }
 
     VELOX_DCHECK(sourceRows[i] == nextRow);
-//    buf[rowIndex] = typedSourceValues[i];
     typedDestValues[rowIndex] = typedSourceValues[i];
     if (moveNulls && rowIndex != i) {
       bits::setBit(
@@ -207,10 +204,8 @@ void SelectiveColumnReader::upcastScalarValues(RowSet rows) {
     }
     nextRow = rows[rowIndex];
   }
-//  ensureValuesCapacity<TVector>(rows.size());
-//  std::memcpy(rawValues_, buf.data(), rows.size() * sizeof(TVector));
   values_ = buf;
-  rawValues_ = raw_buf;
+  rawValues_ = rawBuf;
   numValues_ = rows.size();
   valueRows_.resize(numValues_);
   values_->setSize(numValues_ * sizeof(TVector));
