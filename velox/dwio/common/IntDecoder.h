@@ -304,7 +304,7 @@ FOLLY_ALWAYS_INLINE uint64_t IntDecoder<isSigned>::readVuLong() {
 
 template <bool isSigned>
 FOLLY_ALWAYS_INLINE uint128_t IntDecoder<isSigned>::readVuInt128() {
-  if (LIKELY(bufferEnd - bufferStart >= 19)) { // MaxVarintLength128
+  if (LIKELY(bufferEnd - bufferStart >= Varint::kMaxSize128)) {
     const char* p = bufferStart;
     uint128_t val;
     do {
