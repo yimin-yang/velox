@@ -78,7 +78,7 @@ class SelectiveIntegerDirectColumnReader
   }
 
   bool hasBulkPath() const override {
-    return true;
+    return false;
   }
 
   void seekToRowGroup(uint32_t index) override {
