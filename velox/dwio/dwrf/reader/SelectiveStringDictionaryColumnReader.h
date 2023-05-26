@@ -32,6 +32,10 @@ class SelectiveStringDictionaryColumnReader
       DwrfParams& params,
       common::ScanSpec& scanSpec);
 
+  bool hasBulkPath() const override {
+    return false;
+  }
+
   void seekToRowGroup(uint32_t index) override {
     SelectiveColumnReader::seekToRowGroup(index);
     auto positionsProvider = formatData_->as<DwrfData>().seekToRowGroup(index);
