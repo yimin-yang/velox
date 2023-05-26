@@ -106,7 +106,7 @@ void SelectiveColumnReader::prepareNulls(
       returnReaderNulls_ = anyNulls_ && isDense;
       // No need for null flags if fast path
       if (returnReaderNulls_) {
-        return;
+//        return;
       }
     }
   }
