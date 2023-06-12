@@ -191,7 +191,8 @@ void FlatVector<T>::copyValuesAndNulls(
         if (sourceValues) {
           std::cout << "sourceValues2" << std::endl;
           std::cout << "row=" << row << std::endl;
-          std::cout << "sourceValues[row]=" << sourceValues[row] << std::endl;
+          auto temp = sourceValues[row];
+          std::cout << "temp done" << std::endl;
           rawValues_[row] = sourceValues[row];
           std::cout << "sourceValues2 End" << std::endl;
         }
