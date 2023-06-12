@@ -140,6 +140,7 @@ void FlatVector<T>::copyValuesAndNulls(
     const BaseVector* source,
     const SelectivityVector& rows,
     const vector_size_t* toSourceRow) {
+  std::cout << "call copyValuesAndNulls 1" << std::endl;
   source = source->loadedVector();
   VELOX_CHECK(
       BaseVector::compatibleKind(BaseVector::typeKind(), source->typeKind()));
@@ -147,26 +148,32 @@ void FlatVector<T>::copyValuesAndNulls(
   const uint64_t* sourceNulls = source->rawNulls();
   uint64_t* rawNulls = const_cast<uint64_t*>(BaseVector::rawNulls_);
   if (source->mayHaveNulls()) {
+    std::cout << "source->mayHaveNulls()" << std::endl;
     rawNulls = BaseVector::mutableRawNulls();
   }
 
   // Allocate values buffer if not allocated yet. This may happen if vector
   // contains only null values.
   if (!values_) {
+    std::cout << "!values_" << std::endl;
     mutableRawValues();
   }
 
   if (source->isFlatEncoding()) {
+    std::cout << "source->isFlatEncoding()" << std::endl;
     auto* sourceValues = source->typeKind() != TypeKind::UNKNOWN
         ? source->asUnchecked<FlatVector<T>>()->rawValues()
         : nullptr;
     if (toSourceRow) {
+      std::cout << "toSourceRow" << std::endl;
       rows.applyToSelected([&](auto row) {
         auto sourceRow = toSourceRow[row];
         if (sourceValues) {
+          std::cout << "sourceValues" << std::endl;
           rawValues_[row] = sourceValues[sourceRow];
         }
         if (rawNulls) {
+          std::cout << "rawNulls" << std::endl;
           bits::setNull(
               rawNulls,
               row,
@@ -174,21 +181,26 @@ void FlatVector<T>::copyValuesAndNulls(
         }
       });
     } else {
+      std::cout << "toSourceRow else" << std::endl;
       rows.applyToSelected([&](vector_size_t row) {
         if (row >= source->size()) {
           return;
         }
         if (sourceValues) {
+          std::cout << "sourceValues" << std::endl;
           rawValues_[row] = sourceValues[row];
         }
         if (rawNulls) {
+          std::cout << "rawNulls" << std::endl;
           bits::setNull(
               rawNulls, row, sourceNulls && bits::isBitNull(sourceNulls, row));
         }
       });
     }
   } else if (source->isConstantEncoding()) {
+    std::cout << "source->isConstantEncoding()" << std::endl;
     if (source->isNullAt(0)) {
+      std::cout << "source->isNullAt(0)" << std::endl;
       BaseVector::addNulls(nullptr, rows);
       return;
     }
@@ -197,19 +209,24 @@ void FlatVector<T>::copyValuesAndNulls(
     rows.applyToSelected([&](int32_t row) { rawValues_[row] = value; });
     rows.clearNulls(rawNulls);
   } else {
+    std::cout << "source->isFlatEncoding() else" << std::endl;
     auto sourceVector = source->typeKind() != TypeKind::UNKNOWN
         ? source->asUnchecked<SimpleVector<T>>()
         : nullptr;
     rows.applyToSelected([&](auto row) {
       auto sourceRow = toSourceRow ? toSourceRow[row] : row;
       if (!source->isNullAt(sourceRow)) {
+        std::cout << "!source->isNullAt(sourceRow)" << std::endl;
         if (sourceVector) {
+          std::cout << "sourceVector" << std::endl;
           rawValues_[row] = sourceVector->valueAt(sourceRow);
         }
         if (rawNulls) {
+          std::cout << "rawNulls" << std::endl;
           bits::clearNull(rawNulls, row);
         }
       } else {
+        std::cout << "!source->isNullAt(sourceRow) else" << std::endl;
         bits::setNull(rawNulls, row);
       }
     });
@@ -225,6 +242,7 @@ void FlatVector<T>::copyValuesAndNulls(
   if (count == 0) {
     return;
   }
+  std::cout << "call copyValuesAndNulls 2" << std::endl;
   source = source->loadedVector();
   VELOX_CHECK(
       BaseVector::compatibleKind(BaseVector::typeKind(), source->typeKind()));
