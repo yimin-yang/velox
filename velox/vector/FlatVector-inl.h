@@ -169,8 +169,9 @@ void FlatVector<T>::copyValuesAndNulls(
       rows.applyToSelected([&](auto row) {
         auto sourceRow = toSourceRow[row];
         if (sourceValues) {
-          std::cout << "sourceValues" << std::endl;
+          std::cout << "sourceValues1" << std::endl;
           rawValues_[row] = sourceValues[sourceRow];
+          std::cout << "sourceValues1 End" << std::endl;
         }
         if (rawNulls) {
           std::cout << "rawNulls" << std::endl;
@@ -187,8 +188,9 @@ void FlatVector<T>::copyValuesAndNulls(
           return;
         }
         if (sourceValues) {
-          std::cout << "sourceValues" << std::endl;
+          std::cout << "sourceValues2" << std::endl;
           rawValues_[row] = sourceValues[row];
+          std::cout << "sourceValues2 End" << std::endl;
         }
         if (rawNulls) {
           std::cout << "rawNulls" << std::endl;
