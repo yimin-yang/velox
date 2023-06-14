@@ -202,6 +202,8 @@ void FlatVector<T>::copyValuesAndNulls(
           }
           std::cout << "values_->size()=" << values_->size() << std::endl;
           std::cout << "values_=" << values_ << std::endl;
+          std::cout << "values_->data_=" << values_->data_ << std::endl;
+          std::cout << "rawValues_=" << rawValues_ << std::endl;
           rawValues_[row] = sourceValues[row];
           std::cout << "sourceValues2 End" << std::endl;
         }
@@ -442,6 +444,7 @@ void FlatVector<T>::resizeValues(
       AlignedBuffer::reallocate<T>(&values_, newSize, initialValue);
     } else {
       values_->setSize(newByteSize);
+      std::cout << "values_=" << values_ << " setSize to newByteSize1=" << newByteSize << std::endl;
     }
     rawValues_ = values_->asMutable<T>();
     return;
@@ -479,6 +482,7 @@ inline void FlatVector<bool>::resizeValues(
       AlignedBuffer::reallocate<bool>(&values_, newSize, initialValue);
     } else {
       values_->setSize(newByteSize);
+      std::cout << "values_=" << values_ << " setSize to newByteSize2=" << newByteSize << std::endl;
     }
     // ensure that the newly added positions have the right initial value for
     // the case where changes in size don't result in change in the size of
