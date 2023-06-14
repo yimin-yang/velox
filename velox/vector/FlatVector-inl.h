@@ -197,6 +197,11 @@ void FlatVector<T>::copyValuesAndNulls(
           std::cout << "row=" << row << std::endl;
           auto temp = sourceValues[row];
           std::cout << "temp done" << std::endl;
+          if (!rawValues_) {
+            std::cout << "rawValues_ is null" << std::endl;
+          }
+          std::cout << "values_->size()=" << values_->size() << std::endl;
+          std::cout << "values_=" << values_ << std::endl;
           rawValues_[row] = sourceValues[row];
           std::cout << "sourceValues2 End" << std::endl;
         }
