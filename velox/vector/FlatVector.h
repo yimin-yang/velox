@@ -79,7 +79,7 @@ class FlatVector final : public SimpleVector<T> {
         values_(std::move(values)),
         rawValues_(values_.get() ? const_cast<T*>(values_->as<T>()) : nullptr) {
     std::cout << "Initialize FlatVector, rawValues_=" << (void*)rawValues_ << " length="
-              << length << " values->size()=" << values->size() << std::endl;
+              << length << std::endl;
     setStringBuffers(std::move(stringBuffers));
     VELOX_DCHECK_GE(stringBuffers_.size(), stringBufferSet_.size());
     VELOX_DCHECK_EQ(
@@ -99,6 +99,7 @@ class FlatVector final : public SimpleVector<T> {
 
     auto byteSize = BaseVector::byteSize<T>(BaseVector::length_);
     std::cout << "byteSize=" << byteSize << std::endl;
+    std::cout << "values_->size()=" << values_->size() << std::endl;
     VELOX_CHECK_GE(values_->capacity(), byteSize);
     if (values_->size() < byteSize) {
       // If values_ is resized, this guarantees that elements below
