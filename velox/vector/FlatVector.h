@@ -90,6 +90,11 @@ class FlatVector final : public SimpleVector<T> {
     if (!values_) {
       return;
     }
+
+    if (values_ && (!rawValues_)) {
+      std::cout << "values_ is not null but rawValues_ is null!" << std::endl;
+    }
+
     auto byteSize = BaseVector::byteSize<T>(BaseVector::length_);
     VELOX_CHECK_GE(values_->capacity(), byteSize);
     if (values_->size() < byteSize) {

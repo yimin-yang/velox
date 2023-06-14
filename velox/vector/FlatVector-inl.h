@@ -159,6 +159,10 @@ void FlatVector<T>::copyValuesAndNulls(
     mutableRawValues();
   }
 
+  if (!rawValues_) {
+    std::cout << "rawValues is null!" << std::endl;
+  }
+
   if (source->isFlatEncoding()) {
     std::cout << "source->isFlatEncoding()" << std::endl;
     auto* sourceValues = source->typeKind() != TypeKind::UNKNOWN
