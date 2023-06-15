@@ -191,20 +191,33 @@ void FlatVector<T>::copyValuesAndNulls(
     } else {
       std::cout << "toSourceRow else" << std::endl;
       std::cout << "rawValues_:" << rawValues_ <<  ", values_:" << values_->as<int>() << std::endl;
+      std::cout << "rawValues_ type:" << typeid(*rawValues_).name() << std::endl;
+      std::cout << "sourceValues type:" << typeid(*sourceValues).name() << std::endl;
+
+      std::cout << source->toString() << std::endl;
+
       std::cout << std::boolalpha << "{ size: " << values_->size()
-                                       << ", capacity: " << values_->capacity()
-                                       << ", refCount: " << values_->refCount() << ", unique: " << values_->unique()
-                                       << ", isMutable: " << values_->isMutable() << std::endl;
+                << ", capacity: " << values_->capacity()
+                << ", refCount: " << values_->refCount() << ", unique: " << values_->unique()
+                << ", isMutable: " << values_->isMutable() << std::endl;
+
+      auto& sv = source->values();
+      std::cout << "======\n sv...";
+      std::cout << std::boolalpha << "{ size: " << sv->size()
+      << ", capacity: " << sv->capacity()
+      << ", refCount: " << sv->refCount() << ", unique: " << sv->unique()
+      << ", isMutable: " << sv->isMutable() << std::endl;
+
+      std::cout << "source RawValue:" << sv->as<int>() << std::endl;
 
       rows.applyToSelected([&](vector_size_t row) {
         if (row >= source->size()) {
           return;
         }
         if (sourceValues) {
-          std::cout << "sourceValues2" << std::endl;
-          std::cout << "row=" << row << std::endl;
+          std::cout << "xxxx row=" << row << std::endl;
           auto temp = sourceValues[row];
-          std::cout << "temp done" << std::endl;
+          std::cout << "temp done:" << typeid(temp).name() << std::endl;
           rawValues_[row] = sourceValues[row];
           std::cout << "sourceValues2 End" << std::endl;
         }
