@@ -100,7 +100,6 @@ class FlatVector final : public SimpleVector<T> {
     auto byteSize = BaseVector::byteSize<T>(BaseVector::length_);
     std::cout << "byteSize=" << byteSize << std::endl;
     std::cout << "values_->size()=" << values_->size() << std::endl;
-    std::cout << "values_->data_=" << values_->data_ << std::endl;
     VELOX_CHECK_GE(values_->capacity(), byteSize);
     if (values_->size() < byteSize) {
       // If values_ is resized, this guarantees that elements below
