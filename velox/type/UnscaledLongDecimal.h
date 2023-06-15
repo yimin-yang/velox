@@ -82,6 +82,11 @@ struct UnscaledLongDecimal {
   explicit UnscaledLongDecimal(UnscaledShortDecimal value)
       : unscaledValue_(value.unscaledValue()) {}
 
+  UnscaledLongDecimal(const UnscaledLongDecimal& value)
+  {
+    this->operator=(value);
+  }
+
   UnscaledLongDecimal& operator=(const UnscaledLongDecimal& rhs) {
     memcpy(this, &rhs, sizeof(*this));
     return *this;
