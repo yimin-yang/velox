@@ -143,9 +143,9 @@ struct UnscaledLongDecimal {
     return UnscaledLongDecimal(unscaledValue_ - other.unscaledValue_);
   }
 
-  UnscaledLongDecimal operator=(int value) const {
-    return UnscaledLongDecimal(static_cast<int64_t>(value));
-  }
+//  UnscaledLongDecimal operator=(int value) const {
+//    return UnscaledLongDecimal(static_cast<int64_t>(value));
+//  }
 
   UnscaledLongDecimal& operator+=(const UnscaledLongDecimal& value);
 
