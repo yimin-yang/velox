@@ -383,6 +383,11 @@ void FlatVector<T>::resize(vector_size_t newSize, bool setNotNull) {
 
 template <typename T>
 void FlatVector<T>::ensureWritable(const SelectivityVector& rows) {
+  if (std::is_same_v<T, UnscaledLongDecimal>) {
+    std::cout << "call ensureWritable, T=UnscaledLongDecimal" << std::endl;
+  } else {
+    std::cout << "call ensureWritable" << std::endl;
+  }
   auto newSize = std::max<vector_size_t>(rows.size(), BaseVector::length_);
   if (values_ && !(values_->unique() && values_->isMutable())) {
     BufferPtr newValues;
@@ -414,6 +419,8 @@ void FlatVector<T>::ensureWritable(const SelectivityVector& rows) {
     // TODO Optimization: check and remove string buffers not referenced by
     // rowsToCopy
 
+    std::cout << "For values_=" << values_ << " allocate newValues="
+              << newValues << " to newSize3=" << newSize << std::endl;
     values_ = std::move(newValues);
     rawValues_ = values_->asMutable<T>();
   }
@@ -441,6 +448,7 @@ void FlatVector<T>::resizeValues(
     const uint64_t newByteSize = BaseVector::byteSize<T>(newSize);
     if (values_->capacity() < newByteSize) {
       AlignedBuffer::reallocate<T>(&values_, newSize, initialValue);
+      std::cout << "reallocate values_=" << values_ << " to newSize=" << newSize << std::endl;
     } else {
       values_->setSize(newByteSize);
       std::cout << "values_=" << values_ << " setSize to newByteSize1=" << newByteSize << std::endl;
@@ -450,6 +458,10 @@ void FlatVector<T>::resizeValues(
   }
   BufferPtr newValues =
       AlignedBuffer::allocate<T>(newSize, BaseVector::pool_, initialValue);
+
+  std::cout << "For values_=" << values_ << " allocate newValues2=" << newValues
+            << " newSize=" << newSize
+            << " newValues->capacity()=" << newValues->capacity() <<std::endl;
 
   if (values_) {
     if constexpr (Buffer::is_pod_like_v<T>) {
@@ -479,6 +491,8 @@ inline void FlatVector<bool>::resizeValues(
     const uint64_t newByteSize = BaseVector::byteSize<bool>(newSize);
     if (values_->size() < newByteSize) {
       AlignedBuffer::reallocate<bool>(&values_, newSize, initialValue);
+      std::cout << "reallocate values_=" << values_ << " to newSize=" << newSize
+                << " values_->capacity()=" << values_->capacity() << std::endl;
     } else {
       values_->setSize(newByteSize);
       std::cout << "values_=" << values_ << " setSize to newByteSize2=" << newByteSize << std::endl;
@@ -495,6 +509,10 @@ inline void FlatVector<bool>::resizeValues(
   }
   BufferPtr newValues =
       AlignedBuffer::allocate<bool>(newSize, BaseVector::pool_, initialValue);
+
+  std::cout << "For values_=" << values_ << " allocate newValues=" << newValues
+            << " newSize2=" << newSize
+            << " newValues->capacity()=" << newValues->capacity() <<std::endl;
 
   if (values_) {
     auto dst = newValues->asMutable<char>();

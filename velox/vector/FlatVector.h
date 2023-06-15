@@ -80,6 +80,10 @@ class FlatVector final : public SimpleVector<T> {
         rawValues_(values_.get() ? const_cast<T*>(values_->as<T>()) : nullptr) {
     std::cout << "Initialize FlatVector, rawValues_=" << (void*)rawValues_ << " length="
               << length << std::endl;
+    if (values_) {
+      std::cout << "values_=" << values_ << " values_->size()=" << values_->size() << std::endl;
+      std::cout << "values_=" << values_ << " values_->capacity()=" << values_->capacity() << std::endl;
+    }
     setStringBuffers(std::move(stringBuffers));
     VELOX_DCHECK_GE(stringBuffers_.size(), stringBufferSet_.size());
     VELOX_DCHECK_EQ(
@@ -100,6 +104,7 @@ class FlatVector final : public SimpleVector<T> {
     auto byteSize = BaseVector::byteSize<T>(BaseVector::length_);
     std::cout << "byteSize=" << byteSize << std::endl;
     std::cout << "values_->size()=" << values_->size() << std::endl;
+    std::cout << "values_->capacity()=" << values_->capacity() << std::endl;
     VELOX_CHECK_GE(values_->capacity(), byteSize);
     if (values_->size() < byteSize) {
       // If values_ is resized, this guarantees that elements below
@@ -159,6 +164,8 @@ class FlatVector final : public SimpleVector<T> {
     }
 
     values_ = AlignedBuffer::allocate<T>(size, BaseVector::pool_);
+    std::cout << "allocate values_=" << values_ << " to size=" << size
+              << " values_->capacity()=" << values_->capacity() << std::endl;
     rawValues_ = values_->asMutable<T>();
     return values_;
   }
@@ -190,6 +197,9 @@ class FlatVector final : public SimpleVector<T> {
     if (!(values_ && values_->unique() && values_->isMutable())) {
       BufferPtr newValues =
           AlignedBuffer::allocate<T>(BaseVector::length_, BaseVector::pool());
+      std::cout << "For values_=" << values_ << " allocate newValues=" << newValues
+                << " length_=" << BaseVector::length_
+                << " newValues->capacity()=" << newValues->capacity() <<std::endl;
       if (values_) {
         // This codepath is not yet enabled for OPAQUE types (asMutable will
         // fail below)
