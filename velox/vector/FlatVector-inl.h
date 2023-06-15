@@ -140,10 +140,12 @@ void FlatVector<T>::copyValuesAndNulls(
     const BaseVector* source,
     const SelectivityVector& rows,
     const vector_size_t* toSourceRow) {
-  std::cout << "call copyValuesAndNulls 1" << std::endl;
+  std::cout << "call copyValuesAndNulls 1, T=" << typeid(T).name() << std::endl;
   source = source->loadedVector();
   VELOX_CHECK(
       BaseVector::compatibleKind(BaseVector::typeKind(), source->typeKind()));
+  std::cout << "source->typeKind()=" << (int)source->typeKind() << std::endl;
+
   VELOX_CHECK_GE(BaseVector::length_, rows.end());
   const uint64_t* sourceNulls = source->rawNulls();
   uint64_t* rawNulls = const_cast<uint64_t*>(BaseVector::rawNulls_);
@@ -188,6 +190,12 @@ void FlatVector<T>::copyValuesAndNulls(
       });
     } else {
       std::cout << "toSourceRow else" << std::endl;
+      std::cout << "rawValues_:" << rawValues_ <<  ", values_:" << values_->as<int>() << std::endl;
+      std::cout << std::boolalpha << "{ size: " << values_->size()
+                                       << ", capacity: " << values_->capacity()
+                                       << ", refCount: " << values_->refCount() << ", unique: " << values_->unique()
+                                       << ", isMutable: " << values_->isMutable() << std::endl;
+
       rows.applyToSelected([&](vector_size_t row) {
         if (row >= source->size()) {
           return;
@@ -197,12 +205,6 @@ void FlatVector<T>::copyValuesAndNulls(
           std::cout << "row=" << row << std::endl;
           auto temp = sourceValues[row];
           std::cout << "temp done" << std::endl;
-          if (!rawValues_) {
-            std::cout << "rawValues_ is null" << std::endl;
-          }
-          std::cout << "values_->size()=" << values_->size() << std::endl;
-          std::cout << "values_=" << values_ << std::endl;
-          std::cout << "rawValues_=" << rawValues_ << std::endl;
           rawValues_[row] = sourceValues[row];
           std::cout << "sourceValues2 End" << std::endl;
         }
@@ -451,7 +453,7 @@ void FlatVector<T>::resizeValues(
       std::cout << "reallocate values_=" << values_ << " to newSize=" << newSize << std::endl;
     } else {
       values_->setSize(newByteSize);
-      std::cout << "values_=" << values_ << " setSize to newByteSize1=" << newByteSize << std::endl;
+      std::cout << "values_=" << *values_ << " setSize to newByteSize1=" << newByteSize << std::endl;
     }
     rawValues_ = values_->asMutable<T>();
     return;
