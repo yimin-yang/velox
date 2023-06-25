@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #include <folly/hash/Hash.h>
-
+#include <execinfo.h>
 #include <velox/vector/BaseVector.h>
 #include "velox/common/base/Exceptions.h"
 #include "velox/common/base/SimdUtil.h"
