@@ -135,18 +135,6 @@ bool FlatVector<T>::useSimdEquality(size_t numCmpVals) const {
   }
 }
 
-void printMyStackTrace() {
-  const int MAX_STACK_FRAMES = 64;
-  void* stackTraces[MAX_STACK_FRAMES];
-  int numStackFrames = backtrace(stackTraces, MAX_STACK_FRAMES);
-  char** stackStrings = backtrace_symbols(stackTraces, numStackFrames);
-  std::cout << "Call stack:" << std::endl;
-  for (int i = 0; i < numStackFrames; i++) {
-    std::cout << stackStrings[i] << std::endl;
-  }
-  free(stackStrings);
-}
-
 
 template <typename T>
 void FlatVector<T>::copyValuesAndNulls(
@@ -413,6 +401,19 @@ void FlatVector<T>::prepareForReuse() {
     values_ = nullptr;
     rawValues_ = nullptr;
   }
+}
+
+template <typename T>
+void FlatVector<T>::printMyStackTrace() {
+  const int MAX_STACK_FRAMES = 64;
+  void* stackTraces[MAX_STACK_FRAMES];
+  int numStackFrames = backtrace(stackTraces, MAX_STACK_FRAMES);
+  char** stackStrings = backtrace_symbols(stackTraces, numStackFrames);
+  std::cout << "Call stack:" << std::endl;
+  for (int i = 0; i < numStackFrames; i++) {
+    std::cout << stackStrings[i] << std::endl;
+  }
+  free(stackStrings);
 }
 
 template <typename T>

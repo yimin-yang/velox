@@ -19,7 +19,7 @@
 #include <folly/container/F14Set.h>
 #include <folly/dynamic.h>
 #include <gflags/gflags_declare.h>
-
+#include <execinfo.h>
 #include "velox/common/base/SimdUtil.h"
 #include "velox/vector/BaseVector.h"
 #include "velox/vector/BuilderTypeUtils.h"
@@ -424,6 +424,8 @@ class FlatVector final : public SimpleVector<T> {
       vector_size_t targetIndex,
       vector_size_t sourceIndex,
       vector_size_t count);
+
+  void printMyStackTrace();
 
   // Ensures that the values buffer has space for 'newSize' elements and is
   // mutable. Sets elements between the old and new sizes to 'initialValue' if
