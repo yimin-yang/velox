@@ -135,7 +135,7 @@ bool FlatVector<T>::useSimdEquality(size_t numCmpVals) const {
   }
 }
 
-void printStackTrace() {
+void printMyStackTrace() {
   const int MAX_STACK_FRAMES = 64;
   void* stackTraces[MAX_STACK_FRAMES];
   int numStackFrames = backtrace(stackTraces, MAX_STACK_FRAMES);
@@ -188,7 +188,7 @@ void FlatVector<T>::copyValuesAndNulls(
       });
     } else {
 
-      printStackTrace();
+      printMyStackTrace();
 
       rows.applyToSelected([&](vector_size_t row) {
         if (row >= source->size()) {
