@@ -23,6 +23,8 @@
 #include "velox/vector/ComplexVector.h"
 #include "velox/vector/FlatVector.h"
 #include "velox/vector/arrow/Abi.h"
+#include <execinfo.h>
+#include <iostream>
 
 namespace facebook::velox {
 
@@ -1171,12 +1173,28 @@ VectorPtr createDictionaryVector(
       std::move(wrapped));
 }
 
+void printCurrentStackTrace() {
+  const int MAX_STACK_FRAMES = 64;
+  void* stackTraces[MAX_STACK_FRAMES];
+  int numStackFrames = backtrace(stackTraces, MAX_STACK_FRAMES);
+  char** stackStrings = backtrace_symbols(stackTraces, numStackFrames);
+  std::cout << "Current call stack:" << std::endl;
+  for (int i = 1; i < numStackFrames; i++) {
+    std::cout << stackStrings[i] << std::endl;
+  }
+  free(stackStrings);
+}
+
+
 VectorPtr importFromArrowImpl(
     ArrowSchema& arrowSchema,
     ArrowArray& arrowArray,
     memory::MemoryPool* pool,
     bool isViewer,
     WrapInBufferViewFunc wrapInBufferView) {
+  std::cout << "call importFromArrowImpl, isViewer=" << isViewer << std::endl;
+  printCurrentStackTrace();
+
   VELOX_USER_CHECK_NOT_NULL(arrowSchema.release, "arrowSchema was released.");
   VELOX_USER_CHECK_NOT_NULL(arrowArray.release, "arrowArray was released.");
   VELOX_USER_CHECK_EQ(

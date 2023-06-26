@@ -322,6 +322,7 @@ void FlatVector<StringView>::copy(
     const BaseVector* source,
     const SelectivityVector& rows,
     const vector_size_t* toSourceRow) {
+  std::cout << "call copy5" << std::endl;
   if (!rows.hasSelections()) {
     return;
   }
@@ -391,6 +392,7 @@ template <>
 void FlatVector<StringView>::copyRanges(
     const BaseVector* source,
     const folly::Range<const CopyRange*>& ranges) {
+  std::cout << "call copyRanges" << std::endl;
   auto leaf = source->wrappedVector()->asUnchecked<SimpleVector<StringView>>();
   if (pool_ == leaf->pool()) {
     // We copy referencing the storage of 'source'.

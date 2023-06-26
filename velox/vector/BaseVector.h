@@ -376,6 +376,8 @@ class BaseVector {
       const BaseVector* source,
       const SelectivityVector& rows,
       const vector_size_t* toSourceRow) {
+    std::cout << "call copy6" << std::endl;
+
     rows.applyToSelected([&](vector_size_t row) {
       auto sourceRow = toSourceRow ? toSourceRow[row] : row;
       if (sourceRow >= source->size()) {

@@ -139,6 +139,7 @@ void RowVector::copy(
     vector_size_t targetIndex,
     vector_size_t sourceIndex,
     vector_size_t count) {
+  std::cout << "call copy1" << std::endl;
   if (count == 0) {
     return;
   }
@@ -165,6 +166,8 @@ void RowVector::copy(
     const BaseVector* source,
     const SelectivityVector& rows,
     const vector_size_t* toSourceRow) {
+  std::cout << "call copy2" << std::endl;
+
   for (auto i = 0; i < children_.size(); ++i) {
     BaseVector::ensureWritable(
         rows, type()->asRow().childAt(i), pool(), children_[i]);
@@ -175,6 +178,7 @@ void RowVector::copy(
 
   DecodedVector decodedSource(*source);
   if (decodedSource.isIdentityMapping()) {
+    std::cout << "decodedSource.isIdentityMapping()" << std::endl;
     if (source->mayHaveNulls()) {
       auto rawNulls = source->rawNulls();
       rows.applyToSelected([&](auto row) {
@@ -187,11 +191,16 @@ void RowVector::copy(
     }
 
     auto rowSource = source->loadedVector()->as<RowVector>();
+
+    std::cout << "childrenSize_=" << childrenSize_ << std::endl;
     for (auto i = 0; i < childrenSize_; ++i) {
+      std::cout << "children_[" << i << "] type=" << typeid(children_[i]).name() << std::endl;
       children_[i]->copy(
           rowSource->childAt(i)->loadedVector(), nonNullRows, toSourceRow);
     }
+
   } else {
+    std::cout << "decodedSource.isIdentityMapping() else" << std::endl;
     auto nulls = decodedSource.nulls();
 
     if (nulls) {
@@ -217,7 +226,9 @@ void RowVector::copy(
     }
 
     auto baseSource = decodedSource.base()->as<RowVector>();
+    std::cout << "childrenSize_=" << childrenSize_ << std::endl;
     for (auto i = 0; i < childrenSize_; ++i) {
+      std::cout << "children_[" << i << "] type=" << typeid(children_[i]).name() << std::endl;
       children_[i]->copy(
           baseSource->childAt(i)->loadedVector(),
           nonNullRows,

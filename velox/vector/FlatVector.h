@@ -216,6 +216,7 @@ class FlatVector final : public SimpleVector<T> {
       const BaseVector* source,
       const SelectivityVector& rows,
       const vector_size_t* toSourceRow) override {
+    std::cout << "call copy3" << std::endl;
     if (!rows.hasSelections()) {
       return;
     }
@@ -227,6 +228,7 @@ class FlatVector final : public SimpleVector<T> {
       vector_size_t targetIndex,
       vector_size_t sourceIndex,
       vector_size_t count) override {
+    std::cout << "call copy4" << std::endl;
     if (count == 0) {
       return;
     }
@@ -424,8 +426,6 @@ class FlatVector final : public SimpleVector<T> {
       vector_size_t targetIndex,
       vector_size_t sourceIndex,
       vector_size_t count);
-
-  void printMyStackTrace();
 
   // Ensures that the values buffer has space for 'newSize' elements and is
   // mutable. Sets elements between the old and new sizes to 'initialValue' if
