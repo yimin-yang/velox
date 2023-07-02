@@ -960,6 +960,8 @@ VectorPtr createStringFlatVector(
   bool shouldAcquireStringBuffer = false;
 
   for (size_t i = 0; i < length; ++i) {
+    std::cout << "Bridge offsets[i + 1] - offsets[i]="
+              << offsets[i + 1] - offsets[i] << std::endl;
     rawStringViews[i] =
         StringView(values + offsets[i], offsets[i + 1] - offsets[i]);
     shouldAcquireStringBuffer |= !rawStringViews[i].isInline();

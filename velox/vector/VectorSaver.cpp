@@ -224,6 +224,7 @@ void restoreVectorStringViews(
     if (!value.isInline()) {
       auto offset = *reinterpret_cast<const int64_t*>(
           rawBytes + i * sizeof(StringView) + 8);
+      std::cout << "restoreVectorStringViews value.size()=" << value.size() << std::endl;
       rawValues[i] =
           StringView(computeStringPointer(offset, stringBuffers), value.size());
     }
@@ -347,6 +348,7 @@ VectorPtr readConstant(
       BufferPtr stringBuffer = AlignedBuffer::allocate<char>(stringSize, pool);
       in.read(stringBuffer->template asMutable<char>(), stringSize);
 
+      std::cout << "readConstant stringSize=" << stringSize << std::endl;
       return std::make_shared<ConstantVector<T>>(
           pool,
           size,
