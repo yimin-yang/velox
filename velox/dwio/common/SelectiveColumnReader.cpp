@@ -313,6 +313,7 @@ char* SelectiveColumnReader::copyStringValue(folly::StringPiece value) {
 
 void SelectiveColumnReader::addStringValue(folly::StringPiece value) {
   auto copy = copyStringValue(value);
+  std::cout << "SelectiveColumnReader value.size()=" << value.size() << std::endl;
   reinterpret_cast<StringView*>(rawValues_)[numValues_++] =
       StringView(copy, value.size());
 }

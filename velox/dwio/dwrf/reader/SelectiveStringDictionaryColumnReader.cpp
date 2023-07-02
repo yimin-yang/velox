@@ -138,6 +138,8 @@ void SelectiveStringDictionaryColumnReader::loadDictionary(
   auto offset = stringsBytes;
   for (int32_t i = values.numValues - 1; i >= 0; --i) {
     offset -= int64Values[i];
+    std::cout << "SelectiveStringDictionaryColumnReader int64Values[i]="
+              << int64Values[i] << std::endl;
     views[i] = StringView(strings + offset, int64Values[i]);
   }
 }
