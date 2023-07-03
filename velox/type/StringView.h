@@ -55,8 +55,8 @@ struct StringView {
   StringView() {
     static_assert(sizeof(StringView) == 16);
     memset(this, 0, sizeof(StringView));
-    std::cout << "call StringView()" << std::endl;
-    printCurrentStackTrace();
+//    std::cout << "call StringView()" << std::endl;
+//    printCurrentStackTrace();
   }
 
   StringView(const char* data, int32_t len) : size_(len) {
