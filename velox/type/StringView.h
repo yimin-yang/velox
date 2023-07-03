@@ -53,13 +53,13 @@ struct StringView {
   static constexpr size_t kInlineSize = 12;
 
   StringView() {
-    static_assert(sizeof(StringView) == 16);
+    static_assert(sizeof(StringView) == 20);
     memset(this, 0, sizeof(StringView));
 //    std::cout << "call StringView()" << std::endl;
 //    printCurrentStackTrace();
   }
 
-  StringView(const char* data, int32_t len) : size_(len) {
+  StringView(const char* data, int32_t len) : size_(len), original_size_(len) {
     std::cout << "StringView len=" << len << std::endl;
     if (len > 221311936) {
       printCurrentStackTrace();
@@ -125,6 +125,10 @@ struct StringView {
   }
 
   size_t size() const {
+    if (size_ != original_size_) {
+      std::cout << "size is modified! original_size_="
+                << original_size_ << " size_=" << size_ << std::endl;
+    }
     return size_;
   }
 
@@ -273,6 +277,7 @@ struct StringView {
   // We rely on all members being laid out top to bottom . C++
   // guarantees this.
   uint32_t size_;
+  uint32_t original_size_;
   char prefix_[4];
   union {
     char inlined[8];
