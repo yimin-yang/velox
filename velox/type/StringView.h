@@ -19,6 +19,8 @@
 #include <functional>
 #include <string>
 #include <string_view>
+#include <execinfo.h>
+#include <iostream>
 
 #include <folly/FBString.h>
 #include <folly/Format.h>
@@ -75,6 +77,11 @@ struct StringView {
       memcpy(prefix_, data, kPrefixSize);
       value_.data = data;
     }
+
+    if (size_ > 221311936) {
+      std::cout << "size_=" << size_ << std::endl;
+      printCurrentStackTrace();
+    }
   }
 
   static StringView makeInline(std::string str) {
@@ -122,6 +129,18 @@ struct StringView {
 
   size_t capacity() const {
     return size_;
+  }
+
+  void printCurrentStackTrace() {
+    const int MAX_STACK_FRAMES = 64;
+    void* stackTraces[MAX_STACK_FRAMES];
+    int numStackFrames = backtrace(stackTraces, MAX_STACK_FRAMES);
+    char** stackStrings = backtrace_symbols(stackTraces, numStackFrames);
+    std::cout << "Current call stack:" << std::endl;
+    for (int i = 1; i < numStackFrames; i++) {
+      std::cout << stackStrings[i] << std::endl;
+    }
+    free(stackStrings);
   }
 
   friend std::ostream& operator<<(
