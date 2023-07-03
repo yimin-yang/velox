@@ -58,6 +58,10 @@ struct StringView {
   }
 
   StringView(const char* data, int32_t len) : size_(len) {
+    std::cout << "StringView len=" << len << std::endl;
+    if (len > 221311936) {
+      printCurrentStackTrace();
+    }
     VELOX_CHECK_GE(len, 0);
     VELOX_DCHECK(data || len == 0);
     if (isInline()) {
@@ -76,11 +80,6 @@ struct StringView {
       // large string: store pointer
       memcpy(prefix_, data, kPrefixSize);
       value_.data = data;
-    }
-
-    if (size_ > 221311936) {
-      std::cout << "size_=" << size_ << std::endl;
-      printCurrentStackTrace();
     }
   }
 
