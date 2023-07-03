@@ -120,7 +120,8 @@ void SelectiveStructColumnReaderBase::read(
     auto reader = children_.at(fieldIndex);
 
     std::cout << "fieldIndex=" << fieldIndex
-              << " reader=" << reader->type()->toString() << std::endl;
+              << " typeid(reader).name()="
+              << typeid(reader).name() << std::endl;
 
     if (reader->isTopLevel() && childSpec->projectOut() &&
         !childSpec->hasFilter() && !childSpec->extractValues()) {
