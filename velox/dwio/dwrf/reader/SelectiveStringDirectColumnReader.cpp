@@ -75,6 +75,7 @@ void SelectiveStringDirectColumnReader::extractCrossBuffers(
     const int32_t* starts,
     int32_t rowIndex,
     int32_t numValues) {
+  std::cout << "call extractCrossBuffers, numValues=" << numValues << std::endl;
   int32_t current = 0;
   bool scatter = !outerNonNullRows_.empty();
   for (auto i = 0; i < numValues; ++i) {
@@ -88,6 +89,7 @@ void SelectiveStringDirectColumnReader::extractCrossBuffers(
     } else {
       auto index = outerNonNullRows_[rowIndex + i];
       if (size <= StringView::kInlineSize) {
+        std::cout << "SelectiveStringDirectColumnReader::extractCrossBuffers size1=" << size << std::endl;
         reinterpret_cast<StringView*>(rawValues_)[index] =
             StringView(value.data(), size);
       } else {
