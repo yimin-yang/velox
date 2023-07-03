@@ -92,6 +92,7 @@ void SelectiveStringDirectColumnReader::extractCrossBuffers(
             StringView(value.data(), size);
       } else {
         auto copy = copyStringValue(value);
+        std::cout << "SelectiveStringDirectColumnReader::extractCrossBuffers size=" << size << std::endl;
         reinterpret_cast<StringView*>(rawValues_)[index] =
             StringView(copy, size);
       }
