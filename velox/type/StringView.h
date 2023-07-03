@@ -58,9 +58,13 @@ struct StringView {
     this->size_ = 0;
 //    std::cout << "call StringView()" << std::endl;
 //    printCurrentStackTrace();
+    if (size_ > 221311936) {
+      std::cout << "StringView() large size=" << size_ << std::endl;
+    }
   }
 
-  StringView(const char* data, int32_t len) : size_(len) {
+  StringView(const char* data, int32_t len) {
+    size_ = len;
     std::cout << "StringView len=" << len << std::endl;
     if (len > 221311936) {
       printCurrentStackTrace();
@@ -83,6 +87,13 @@ struct StringView {
       // large string: store pointer
       memcpy(prefix_, data, kPrefixSize);
       value_.data = data;
+    }
+
+    if (size_ > 221311936) {
+      std::cout << "StringView large size=" << size_ << std::endl;
+    }
+    if (size_ != len) {
+      std::cout << "size !=len, len=" << len << std::endl;
     }
   }
 
