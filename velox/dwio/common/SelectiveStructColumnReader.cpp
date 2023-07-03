@@ -118,6 +118,10 @@ void SelectiveStructColumnReaderBase::read(
     }
     auto fieldIndex = childSpec->subscript();
     auto reader = children_.at(fieldIndex);
+
+    std::cout << "fieldIndex=" << fieldIndex
+              << " reader=" << reader->type()->toString() << std::endl;
+
     if (reader->isTopLevel() && childSpec->projectOut() &&
         !childSpec->hasFilter() && !childSpec->extractValues()) {
       // Will make a LazyVector.

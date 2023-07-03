@@ -700,6 +700,12 @@ std::optional<RowVectorPtr> HiveDataSource::next(
     for (int i = 0; i < outputType_->size(); i++) {
       outputColumns.emplace_back(exec::wrapChild(
           rowsRemaining, remainingIndices, rowVector->childAt(i)));
+
+      std::cout << "outputType_->childAt(" << i << ")="
+                << outputType_->childAt(i)->toString() << std::endl;
+
+      std::cout << "typeid(rowVector->childAt(i)).name()="
+                << typeid(rowVector->childAt(i)).name() << std::endl;
     }
 
     return std::make_shared<RowVector>(

@@ -268,6 +268,7 @@ uint64_t DwrfRowReader::next(uint64_t size, VectorPtr& result) {
       setStrideIndex(strideSize > 0 ? currentRowInStripe / strideSize : 0);
 
       if (selectiveColumnReader_) {
+        std::cout << "case 1 selectiveColumnReader_" << std::endl;
         selectiveColumnReader_->next(rowsToRead, result);
       } else {
         columnReader_->next(rowsToRead, result);
