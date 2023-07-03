@@ -289,10 +289,9 @@ uint64_t DwrfRowReader::next(uint64_t size, VectorPtr& result) {
         std::cout << "** numCols_=" << numCols_ << std::endl;
 
         for (int64_t colIdx = 0; colIdx < numCols_; colIdx++) {
-          auto strViews = vecs_[colIdx]->asFlatVector<velox::StringView>()->rawValues();
-          if (strViews) {
+          if (colIdx == 3) {
             std::cout << "typeid(vecs_[colIdx]).name()=" << typeid(vecs_[colIdx]).name() << std::endl;
-//            auto strViews = vecs_[colIdx]->asFlatVector<velox::StringView>()->rawValues();
+            auto strViews = vecs_[colIdx]->asFlatVector<velox::StringView>()->rawValues();
             for (int rowIdx = 0; rowIdx < numRows_; rowIdx++) {
               auto length = strViews[rowIdx].size();
               std::cout << "colIdx=" << colIdx << " rowIdx=" << rowIdx
@@ -301,7 +300,7 @@ uint64_t DwrfRowReader::next(uint64_t size, VectorPtr& result) {
               std::cout << "real length=" << strlen(strViews[rowIdx].data()) << std::endl;
             }
           } else {
-            std::cout << "colIdx=" << colIdx << " strViews is null" << std::endl;
+            std::cout << "colIdx=" << colIdx << " skip" << std::endl;
           }
         }
 
