@@ -641,6 +641,9 @@ void HiveDataSource::setFromDataSource(
 std::optional<RowVectorPtr> HiveDataSource::next(
     uint64_t size,
     velox::ContinueFuture& /*future*/) {
+
+  std::cout << "HiveDataSource::next" << std::endl;
+
   VELOX_CHECK(split_ != nullptr, "No split to process. Call addSplit first.");
   if (emptySplit_) {
     resetSplit();

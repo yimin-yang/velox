@@ -161,6 +161,8 @@ RowVectorPtr TableScan::getOutput() {
          },
          &debugString_});
 
+    std::cout << "dataSource_->next" << std::endl;
+
     auto dataOptional = dataSource_->next(readBatchSize_, blockingFuture_);
     checkPreload();
 

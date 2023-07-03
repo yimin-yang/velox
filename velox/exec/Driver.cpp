@@ -280,7 +280,7 @@ void Driver::enqueueInternal() {
 StopReason Driver::runInternal(
     std::shared_ptr<Driver>& self,
     std::shared_ptr<BlockingState>& blockingState,
-    RowVectorPtr& result) {
+    RowVectorPtr& result1) {
   const auto now = getCurrentTimeMicro();
   const auto queuedTime = (now - queueTimeStartMicros_) * 1'000;
   // Update the next operator's queueTime.
@@ -443,17 +443,17 @@ StopReason Driver::runInternal(
                 createDeltaCpuWallTimer([op](const CpuWallTiming& timing) {
                   op->stats().wlock()->getOutputTiming.add(timing);
                 });
-            result = op->getOutput();
-            if (result) {
+            result1 = op->getOutput();
+            if (result1) {
               VELOX_CHECK(
-                  result->size() > 0,
+                  result1->size() > 0,
                   "Operator::getOutput() must return nullptr or "
                   "a non-empty vector: {}",
                   op->operatorType());
               {
                 auto lockedStats = op->stats().wlock();
                 lockedStats->addOutputVector(
-                    result->estimateFlatSize(), result->size());
+                    result1->estimateFlatSize(), result1->size());
               }
 
               // This code path is used only in single-threaded execution.
