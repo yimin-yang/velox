@@ -53,7 +53,7 @@ struct StringView {
   static constexpr size_t kInlineSize = 12;
 
   StringView() {
-    static_assert(sizeof(StringView) == 20);
+    static_assert(sizeof(StringView) == 24);
     memset(this, 0, sizeof(StringView));
 //    std::cout << "call StringView()" << std::endl;
 //    printCurrentStackTrace();
