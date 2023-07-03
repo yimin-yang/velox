@@ -329,8 +329,6 @@ class AlignedBuffer : public Buffer {
     // set size explicitly instead of setSize because `fillNewMemory` already
     // called the constructors
     buffer->size_ = size;
-    std::cout << "typeid(T).name()=" << typeid(T).name() << std::endl;
-    std::cout << "buffer->size_=" << size << std::endl;
     BufferPtr result(buffer);
     buffer->template fillNewMemory<T>(0, size, initValue);
     return result;

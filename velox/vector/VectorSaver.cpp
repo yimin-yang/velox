@@ -190,6 +190,10 @@ void writeStringViews(
     const BufferPtr& strings,
     const std::vector<BufferPtr>& stringBuffers,
     std::ostream& out) {
+
+  std::cout << "call writeStringViews" << std::endl;
+  std::cout << "typeid(strings).name()=" << typeid(strings).name() << std::endl;
+
   write<int32_t>(strings->size(), out);
 
   auto rawBytes = strings->as<char>();
@@ -217,6 +221,8 @@ void restoreVectorStringViews(
     vector_size_t size,
     const BufferPtr& strings,
     const std::vector<BufferPtr>& stringBuffers) {
+  std::cout << "call restoreVectorStringViews" << std::endl;
+  std::cout << "typeid(strings).name()=" << typeid(strings).name() << std::endl;
   auto rawBytes = strings->as<char>();
   auto rawValues = strings->asMutable<StringView>();
   for (auto i = 0; i < size; ++i) {
@@ -239,6 +245,9 @@ bool isVarcharOrVarbinary(const BaseVector& vector) {
 void writeFlatVector(const BaseVector& vector, std::ostream& out) {
   // Nulls buffer.
   writeOptionalBuffer(vector.nulls(), out);
+
+  std::cout << "call writeFlatVector" << std::endl;
+  std::cout << "typeid(vector).name()=" << typeid(vector).name() << std::endl;
 
   // Values buffer.
   if (isVarcharOrVarbinary(vector)) {

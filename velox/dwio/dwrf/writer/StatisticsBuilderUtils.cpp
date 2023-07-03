@@ -80,6 +80,10 @@ void StatisticsBuilderUtils::addValues(
     StringStatisticsBuilder& builder,
     const VectorPtr& vector,
     const common::Ranges& ranges) {
+
+  std::cout << "call StatisticsBuilderUtils::addValues1" << std::endl;
+  std::cout << "typeid(vector).name()=" << typeid(vector).name() << std::endl;
+
   auto nulls = vector->rawNulls();
   auto data = vector->asFlatVector<StringView>()->rawValues();
   if (vector->mayHaveNulls()) {
@@ -102,6 +106,10 @@ void StatisticsBuilderUtils::addValues(
     const VectorPtr& vector,
     const common::Ranges& ranges) {
   auto nulls = vector->rawNulls();
+
+  std::cout << "call StatisticsBuilderUtils::addValues2" << std::endl;
+  std::cout << "typeid(vector).name()=" << typeid(vector).name() << std::endl;
+
   auto data = vector->asFlatVector<StringView>()->rawValues();
   if (vector->mayHaveNulls()) {
     for (auto& pos : ranges) {
