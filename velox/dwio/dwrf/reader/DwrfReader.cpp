@@ -17,6 +17,8 @@
 #include "velox/dwio/dwrf/reader/DwrfReader.h"
 #include "velox/dwio/common/TypeUtils.h"
 #include "velox/dwio/common/exception/Exception.h"
+#include "velox/row/UnsafeRowDeserializers.h"
+
 
 namespace facebook::velox::dwrf {
 
@@ -274,7 +276,7 @@ uint64_t DwrfRowReader::next(uint64_t size, VectorPtr& result) {
 
 
         auto rowVector = std::dynamic_pointer_cast<RowVector>(result);
-        std::vector<VectorPtr> vecs_;
+        std::vector<facebook::velox::VectorPtr> vecs_;
         int32_t numRows_ = rowVector->size();
         int32_t numCols_ = rowVector->childrenSize();
 
@@ -287,7 +289,7 @@ uint64_t DwrfRowReader::next(uint64_t size, VectorPtr& result) {
         std::cout << "** numCols_=" << numCols_ << std::endl;
 
         for (int64_t colIdx = 0; colIdx < numCols_; colIdx++) {
-          auto strViews = vecs_[colIdx]->asFlatVector<StringView>()->rawValues();
+          auto strViews = vecs_[colIdx]->asFlatVector<velox::StringView>()->rawValues();
           if (strViews) {
             std::cout << "typeid(vecs_[colIdx]).name()=" << typeid(vecs_[colIdx]).name() << std::endl;
 //            auto strViews = vecs_[colIdx]->asFlatVector<velox::StringView>()->rawValues();
