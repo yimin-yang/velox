@@ -18,6 +18,8 @@
 #include "velox/dwio/common/TypeUtils.h"
 #include "velox/dwio/common/exception/Exception.h"
 #include "velox/row/UnsafeRowDeserializers.h"
+#include "velox/row/UnsafeRowSerializers.h"
+#include "velox/vector/arrow/Bridge.h"
 
 
 namespace facebook::velox::dwrf {
