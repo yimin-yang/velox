@@ -289,22 +289,22 @@ uint64_t DwrfRowReader::next(uint64_t size, VectorPtr& result) {
         std::cout << "** numRows_=" << numRows_ << std::endl;
         std::cout << "** numCols_=" << numCols_ << std::endl;
 
-        for (int64_t colIdx = 0; colIdx < numCols_; colIdx++) {
-          if (colIdx == 3) {
-            std::cout << "typeid(vecs_[colIdx]).name()=" << typeid(vecs_[colIdx]).name() << std::endl;
-            FlatVector<velox::StringView>* temp = vecs_[colIdx]->asFlatVector<velox::StringView>();
-            auto strViews = temp->rawValues();
-            for (int rowIdx = 0; rowIdx < numRows_; rowIdx++) {
-              auto length = strViews[rowIdx].size();
-              std::cout << "colIdx=" << colIdx << " rowIdx=" << rowIdx
-                        << " length=" << length << std::endl;
-              std::cout << "strViews[rowIdx].data()=" << strViews[rowIdx].data() << std::endl;
-              std::cout << "real length=" << strlen(strViews[rowIdx].data()) << std::endl;
-            }
-          } else {
-            std::cout << "colIdx=" << colIdx << " skip" << std::endl;
-          }
-        }
+//        for (int64_t colIdx = 0; colIdx < numCols_; colIdx++) {
+//          if (colIdx == 3) {
+//            std::cout << "typeid(vecs_[colIdx]).name()=" << typeid(vecs_[colIdx]).name() << std::endl;
+//            FlatVector<velox::StringView>* temp = vecs_[colIdx]->asFlatVector<velox::StringView>();
+//            auto strViews = temp->rawValues();
+//            for (int rowIdx = 0; rowIdx < numRows_; rowIdx++) {
+//              auto length = strViews[rowIdx].size();
+//              std::cout << "colIdx=" << colIdx << " rowIdx=" << rowIdx
+//                        << " length=" << length << std::endl;
+//              std::cout << "strViews[rowIdx].data()=" << strViews[rowIdx].data() << std::endl;
+//              std::cout << "real length=" << strlen(strViews[rowIdx].data()) << std::endl;
+//            }
+//          } else {
+//            std::cout << "colIdx=" << colIdx << " skip" << std::endl;
+//          }
+//        }
 
 
       } else {
