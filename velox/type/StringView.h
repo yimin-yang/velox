@@ -65,7 +65,6 @@ struct StringView {
 
   StringView(const char* data, int32_t len) {
     size_ = len;
-    std::cout << "StringView len=" << len << std::endl;
     if (len > 221311936) {
       printCurrentStackTrace();
     }
