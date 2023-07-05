@@ -272,9 +272,7 @@ uint64_t DwrfRowReader::next(uint64_t size, VectorPtr& result) {
       setStrideIndex(strideSize > 0 ? currentRowInStripe / strideSize : 0);
 
       if (selectiveColumnReader_) {
-        std::cout << "case 1 selectiveColumnReader_" << std::endl;
         selectiveColumnReader_->next(rowsToRead, result);
-        std::cout << "typeid(result).name()=" << typeid(result).name() << std::endl;
 
 
         auto rowVector = std::dynamic_pointer_cast<RowVector>(result);
@@ -284,7 +282,8 @@ uint64_t DwrfRowReader::next(uint64_t size, VectorPtr& result) {
 
         vecs_.reserve(numCols_);
         for (int colIdx = 0; colIdx < numCols_; colIdx++) {
-          vecs_.push_back(rowVector->childAt(colIdx));
+          auto temp = rowVector->childAt(colIdx);
+          vecs_.push_back(temp);
         }
 
         std::cout << "** numRows_=" << numRows_ << std::endl;
@@ -293,7 +292,8 @@ uint64_t DwrfRowReader::next(uint64_t size, VectorPtr& result) {
         for (int64_t colIdx = 0; colIdx < numCols_; colIdx++) {
           if (colIdx == 3) {
             std::cout << "typeid(vecs_[colIdx]).name()=" << typeid(vecs_[colIdx]).name() << std::endl;
-            auto strViews = vecs_[colIdx]->asFlatVector<velox::StringView>()->rawValues();
+            FlatVector<velox::StringView>* temp = vecs_[colIdx]->asFlatVector<velox::StringView>();
+            auto strViews = temp->rawValues();
             for (int rowIdx = 0; rowIdx < numRows_; rowIdx++) {
               auto length = strViews[rowIdx].size();
               std::cout << "colIdx=" << colIdx << " rowIdx=" << rowIdx
