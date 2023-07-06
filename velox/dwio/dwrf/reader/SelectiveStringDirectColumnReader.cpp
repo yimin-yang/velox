@@ -435,7 +435,7 @@ void SelectiveStringDirectColumnReader::read(
     vector_size_t offset,
     RowSet rows,
     const uint64_t* incomingNulls) {
-  prepareRead<folly::StringPiece>(offset, rows, incomingNulls);
+  prepareRead<StringView>(offset, rows, incomingNulls);
   bool isDense = rows.back() == rows.size() - 1;
 
   auto end = rows.back() + 1;
