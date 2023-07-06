@@ -55,6 +55,7 @@ void SelectiveColumnReader::ensureValuesCapacity(vector_size_t numRows) {
   values_ = AlignedBuffer::allocate<T>(
       numRows + (simd::kPadding / sizeof(T)), &memoryPool_);
   rawValues_ = values_->asMutable<char>();
+  memset(rawValues_, 0, values_->size());
 }
 
 template <typename T>
