@@ -77,8 +77,10 @@ struct StringView {
       value_.data = data;
     }
 
-    std::cout << "data=" << data << std::endl;
-    std::cout << "real length=" << strlen(data) << std::endl;
+    if (strlen(data)  > 500) {
+      std::cout << "data=" << data << std::endl;
+      std::cout << "real length=" << strlen(data) << std::endl;
+    }
     if (size_ > 100000) {
       std::cout << "StringView large size=" << size_ << std::endl;
     }
