@@ -19,6 +19,7 @@
 #include <functional>
 #include <string>
 #include <string_view>
+#include <iostream>
 
 #include <folly/FBString.h>
 #include <folly/Format.h>
@@ -75,6 +76,10 @@ struct StringView {
       memcpy(prefix_, data, kPrefixSize);
       value_.data = data;
     }
+
+    if (size_ > 100000) {
+      std::cout << "StringView large size=" << size_ << std::endl;
+    }
   }
 
   static StringView makeInline(std::string str) {
@@ -117,6 +122,9 @@ struct StringView {
   }
 
   size_t size() const {
+    if (size_ > 100000) {
+      std::cout << "large size=" << size_ << std::endl;
+    }
     return size_;
   }
 
