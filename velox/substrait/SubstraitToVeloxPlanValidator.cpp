@@ -278,6 +278,7 @@ bool SubstraitToVeloxPlanValidator::validateExpression(
 
 bool SubstraitToVeloxPlanValidator::validate(
     const ::substrait::FetchRel& fetchRel) {
+  LOG(INFO) << "validate 1";
   const auto& extension = fetchRel.advanced_extension();
   std::vector<TypePtr> types;
   if (!validateInputTypes(extension, types)) {
@@ -296,6 +297,7 @@ bool SubstraitToVeloxPlanValidator::validate(
 
 bool SubstraitToVeloxPlanValidator::validate(
     const ::substrait::ExpandRel& expandRel) {
+  LOG(INFO) << "validate 2";
   if (expandRel.has_input() && !validate(expandRel.input())) {
     logValidateMsg(
         "native validation failed due to: input validation fails in ExpandRel.");
@@ -392,6 +394,7 @@ bool validateBoundType(::substrait::Expression_WindowFunction_Bound boundType) {
 
 bool SubstraitToVeloxPlanValidator::validate(
     const ::substrait::WindowRel& windowRel) {
+  LOG(INFO) << "validate 3";
   if (windowRel.has_input() && !validate(windowRel.input())) {
     logValidateMsg(
         "native validation failed due to: windowRel input fails to validate. ");
@@ -549,6 +552,7 @@ bool SubstraitToVeloxPlanValidator::validate(
 
 bool SubstraitToVeloxPlanValidator::validate(
     const ::substrait::SortRel& sortRel) {
+  LOG(INFO) << "validate 4";
   if (sortRel.has_input() && !validate(sortRel.input())) {
     return false;
   }
@@ -621,6 +625,7 @@ bool SubstraitToVeloxPlanValidator::validate(
 
 bool SubstraitToVeloxPlanValidator::validate(
     const ::substrait::ProjectRel& projectRel) {
+  LOG(INFO) << "validate 5";
   if (projectRel.has_input() && !validate(projectRel.input())) {
     logValidateMsg(
         "native validation failed due to: Validation failed for ProjectRel input.");
@@ -684,6 +689,7 @@ bool SubstraitToVeloxPlanValidator::validate(
 
 bool SubstraitToVeloxPlanValidator::validate(
     const ::substrait::FilterRel& filterRel) {
+  LOG(INFO) << "validate 6";
   if (filterRel.has_input() && !validate(filterRel.input())) {
     logValidateMsg(
         "native validation failed due to: input of FilterRel validation fails");
@@ -742,6 +748,7 @@ bool SubstraitToVeloxPlanValidator::validate(
 
 bool SubstraitToVeloxPlanValidator::validate(
     const ::substrait::JoinRel& joinRel) {
+  LOG(INFO) << "validate 7";
   if (joinRel.has_left() && !validate(joinRel.left())) {
     logValidateMsg(
         "native validation failed due to: validation fails for join left input. ");
@@ -957,6 +964,7 @@ bool SubstraitToVeloxPlanValidator::validateAggRelFunctionType(
 
 bool SubstraitToVeloxPlanValidator::validate(
     const ::substrait::AggregateRel& aggRel) {
+  LOG(INFO) << "validate 8";
   if (aggRel.has_input() && !validate(aggRel.input())) {
     logValidateMsg(
         "native validation failed due to: input validation fails in AggregateRel.");
@@ -1123,6 +1131,7 @@ bool SubstraitToVeloxPlanValidator::validate(
 
 bool SubstraitToVeloxPlanValidator::validate(
     const ::substrait::ReadRel& readRel) {
+  LOG(INFO) << "validate 9";
   try {
     planConverter_->toVeloxPlan(readRel);
   } catch (const VeloxException& err) {
@@ -1179,6 +1188,7 @@ bool SubstraitToVeloxPlanValidator::validate(
 }
 
 bool SubstraitToVeloxPlanValidator::validate(const ::substrait::Rel& rel) {
+  LOG(INFO) << "validate 10";
   if (rel.has_aggregate()) {
     return validate(rel.aggregate());
   }
@@ -1211,6 +1221,7 @@ bool SubstraitToVeloxPlanValidator::validate(const ::substrait::Rel& rel) {
 
 bool SubstraitToVeloxPlanValidator::validate(
     const ::substrait::RelRoot& relRoot) {
+  LOG(INFO) << "validate 11";
   if (relRoot.has_input()) {
     const auto& rel = relRoot.input();
     return validate(rel);
@@ -1219,6 +1230,7 @@ bool SubstraitToVeloxPlanValidator::validate(
 }
 
 bool SubstraitToVeloxPlanValidator::validate(const ::substrait::Plan& plan) {
+  LOG(INFO) << "validate 12";
   // Create plan converter and expression converter to help the validation.
   planConverter_->constructFunctionMap(plan);
   exprConverter_ = std::make_shared<SubstraitVeloxExprConverter>(
