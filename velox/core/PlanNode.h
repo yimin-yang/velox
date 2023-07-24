@@ -19,6 +19,7 @@
 #include "velox/core/Expressions.h"
 #include "velox/core/QueryConfig.h"
 #include "velox/vector/arrow/Bridge.h"
+#include <iostream>
 
 struct ArrowArrayStream;
 
